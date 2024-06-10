@@ -51,7 +51,7 @@ public class PlanoDeVooApp {
 
         identaeronaveField = criarCampoFormulario(formPanel, "Identificação da Aeronave:*");
         regrasField = criarCampoFormulariobox(formPanel, "Regras:*", new String[] {"I", "V", "Y", "Z"});
-        tipoDeVooField = criarCampoFormulariocombobox(formPanel, "Tipo de Voo (VFR/IFR):*", new String[] {"G", "S", "N", "M", "X"});
+        tipoDeVooField = criarCampoFormulariocombobox(formPanel, "Tipo de Voo:*", new String[] {"G", "S", "N", "M", "X"});
         numaeronaveField = criarCampoFormulario(formPanel, "Numero da Aeronave:*");
         tipoaeronaveField = criarCampoFormulario(formPanel, "Tipo de Aeronave:*");
         catetField = criarCampoFormulariocombobox(formPanel, "Categoria da Esteira de Turbulência:*", new String[] {"L", "M", "H", "J"});
@@ -185,7 +185,7 @@ public class PlanoDeVooApp {
             return false;
         }
         if ((tipoaeronaveField.getText().isEmpty())) {
-            mostrarErroValidacao("Número de Aeronave deve ser preenchido!");
+            mostrarErroValidacao("Tipo de Aeronave deve ser preenchido!");
             return false;
         }
         if (catetField.getSelectedIndex() == 0) {

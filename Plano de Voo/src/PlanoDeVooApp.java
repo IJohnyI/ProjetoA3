@@ -52,17 +52,17 @@ public class PlanoDeVooApp {
         identaeronaveField = criarCampoFormulario(formPanel, "Identificação da Aeronave:*");
         regrasField = criarCampoFormulariobox(formPanel, "Regras:*", new String[] {"I", "V", "Y", "Z"});
         tipoDeVooField = criarCampoFormulariocombobox(formPanel, "Tipo de Voo (VFR/IFR):*", new String[] {"G", "S", "N", "M", "X"});
-        numaeronaveField = criarCampoFormulario(formPanel, "Numero Aeronave:*");
-        tipoaeronaveField = criarCampoFormulario(formPanel, "Tipo Aeronave:*");
+        numaeronaveField = criarCampoFormulario(formPanel, "Numero da Aeronave:*");
+        tipoaeronaveField = criarCampoFormulario(formPanel, "Tipo de Aeronave:*");
         catetField = criarCampoFormulariocombobox(formPanel, "Categoria da Esteira de Turbulência:*", new String[] {"L", "M", "H", "J"});
         equipamentoField = criarCampoFormulariocombobox(formPanel, "Equipamento:*", new String[] {"N", "S", "A", "B", "C", "D", "E1", "E2", "E3", "F", "G", "H", "I"});
         equipamentoVField = criarCampoFormulariocombobox(formPanel, "Equipamento de Vigilância:*", new String[] {"N", "S", "A", "B", "C", "D", "E1", "E2", "E3", "F", "G", "H", "I"});
-        aerodromoptField = criarCampoFormulario(formPanel, "Aeródromo Partida:*");
+        aerodromoptField = criarCampoFormulario(formPanel, "Aeródromo de Partida:*");
         horaeobtField = criarCampoFormulario(formPanel, "Hora EOBT:*");
         velocidadeField = criarCampoFormulario(formPanel, "Velocidade de Cruzeiro:*");
         nivelDeVooField = criarCampoFormulario(formPanel, "Nivel de Cruzeiro:*");
         rotaField = criarCampoFormulario(formPanel, "Rota:*");
-        aerodromodestinoField = criarCampoFormulario(formPanel, "Aeródromo Destino:*");
+        aerodromodestinoField = criarCampoFormulario(formPanel, "Aeródromo de Destino:*");
         duracaototalvooField = criarCampoFormulario(formPanel, "Duração Prevista do Voo:*");
         aerodromoalternativaField = criarCampoFormulario(formPanel, "Aeródromo de Alternativa:*");
         observacoesField = new JTextArea();
@@ -158,7 +158,7 @@ public class PlanoDeVooApp {
             return false;
         }
         if (regrasField == null || regrasField.length == 0) {
-            mostrarErroValidacao("Regras deve ser preenchido!");
+            mostrarErroValidacao("Regras deve ser marcado!");
             return false;
         }
         boolean regraSelecionada = false;
@@ -169,7 +169,7 @@ public class PlanoDeVooApp {
             }
         }
         if (!regraSelecionada) {
-            mostrarErroValidacao("Regras deve ser preenchido!");
+            mostrarErroValidacao("Regras deve ser marcado!");
             return false;
         }
         if (tipoDeVooField.getSelectedIndex() == 0) {
@@ -177,7 +177,7 @@ public class PlanoDeVooApp {
             return false;
         }
         if ((numaeronaveField.getText().isEmpty())) {
-            mostrarErroValidacao("Numero de aeronave deve ser preenchido!");
+            mostrarErroValidacao("Número de Aeronave deve ser preenchido!");
             return false;
         }
         if (!validarEntrada(numaeronaveField.getText(), "numeros")) {
@@ -201,7 +201,7 @@ public class PlanoDeVooApp {
             return false;
         }
         if ((aerodromoptField.getText().isEmpty())) {
-            mostrarErroValidacao("Aerodromo de Partida deve ser preenchido!");
+            mostrarErroValidacao("Aeródromo de Partida deve ser preenchido!");
             return false;
         }
         if (!validarEntrada(aerodromoptField.getText(), "Letras")) {
@@ -209,15 +209,15 @@ public class PlanoDeVooApp {
             return false;
         }
         if (!validarEntrada(horaeobtField.getText(), "horario")) {
-            mostrarErroValidacao("Horario deve ser preenchido no formato HHMM!");
+            mostrarErroValidacao("Horário deve ser preenchido no formato HHMM!");
             return false;
         }
         if ((velocidadeField.getText().isEmpty())) {
-            mostrarErroValidacao("Velocidade deve ser preenchido!");
+            mostrarErroValidacao("Velocidade de Cruzeiro deve ser preenchido!");
             return false;
         }
         if ((nivelDeVooField.getText().isEmpty())) {
-            mostrarErroValidacao("Nivel de Voo deve ser preenchido!");
+            mostrarErroValidacao("Nível de Cruzeiro deve ser preenchido!");
             return false;
         }
         if ((rotaField.getText().isEmpty())) {
@@ -225,27 +225,27 @@ public class PlanoDeVooApp {
             return false;
         }
         if ((aerodromodestinoField.getText().isEmpty())) {
-            mostrarErroValidacao("Aerodromo Destino deve ser preenchido!");
+            mostrarErroValidacao("Aeródromo de Destino deve ser preenchido!");
             return false;
         }
         if (!validarEntrada(aerodromodestinoField.getText(), "letras")) {
-            mostrarErroValidacao("Aeronave deve conter apenas numeros.");
+            mostrarErroValidacao("Aeródromo de Destino deve conter apenas letras.");
             return false;
         }
         if ((duracaototalvooField.getText().isEmpty())) {
-            mostrarErroValidacao("Duração total do Voo deve ser preenchido!");
+            mostrarErroValidacao("Duração Prevista do Voo deve ser preenchido!");
             return false;
         }
         if (!validarEntrada(duracaototalvooField.getText(), "numeros")) {
-            mostrarErroValidacao("Duração prevista deve ser preenchida apenas com numeros.");
+            mostrarErroValidacao("Duração prevista do Voo deve ser preenchida apenas com numeros.");
             return false;
         }
         if ((aerodromoalternativaField.getText().isEmpty())) {
-            mostrarErroValidacao("Aerodromo Alternativa deve ser preenchido!");
+            mostrarErroValidacao("Aerodromo de Alternativa deve ser preenchido!");
             return false;
         }
         if (!validarEntrada(aerodromoalternativaField.getText(), "letras")) {
-            mostrarErroValidacao("Aeródromo de alternativa deve conter apenas letras.");
+            mostrarErroValidacao("Aeródromo de Alternativa deve conter apenas letras.");
             return false;
         }
         // Adicione outras validações conforme necessário

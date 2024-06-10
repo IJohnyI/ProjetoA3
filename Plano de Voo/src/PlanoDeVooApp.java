@@ -11,12 +11,14 @@ public class PlanoDeVooApp {
     private static JCheckBox[] regrasField;
     @SuppressWarnings("rawtypes")
     private static JComboBox tipoDeVooField;
-    private static JCheckBox[] numaeronaveField;
-    private static JCheckBox[] tipoaeronaveField;
+    private static JTextField numaeronaveField;
+    private static JTextField tipoaeronaveField;
     @SuppressWarnings("rawtypes")
     private static JComboBox catetField;
     @SuppressWarnings("rawtypes")
     private static JComboBox equipamentoField;
+    @SuppressWarnings("rawtypes")
+    private static JComboBox equipamentoVField;
     private static JTextField aerodromoptField;
     private static JTextField horaeobtField;
     private static JTextField velocidadeField;
@@ -45,23 +47,24 @@ public class PlanoDeVooApp {
         titleLabel.setFont(new Font("Verdana", Font.BOLD, 24));
         mainPanel.add(titleLabel, BorderLayout.NORTH);
 
-        JPanel formPanel = new JPanel(new GridLayout(16, 2, 10, 10));
+        JPanel formPanel = new JPanel(new GridLayout(17, 2, 10, 10));
 
         identaeronaveField = criarCampoFormulario(formPanel, "Identificação da Aeronave:*");
-        regrasField = criarCampoFormulariobox(formPanel, "Regras:*", new String[] {"A320", "B737", "A330", "B777"});
-        tipoDeVooField = criarCampoFormulariocombobox(formPanel, "Tipo de Voo (VFR/IFR):*", new String[] {"VFR", "IFR"});
-        numaeronaveField = criarCampoFormulariobox(formPanel, "Numero Aeronave:*", new String[] {"A320", "B737", "A330", "B777"});
-        tipoaeronaveField = criarCampoFormulariobox(formPanel, "Tipo Aeronave:*", new String[] {"A320", "B737", "A330", "B777"});
-        catetField = criarCampoFormulariocombobox(formPanel, "Catet:*", new String[] {"A320", "B737", "A330", "B777"});
-        equipamentoField = criarCampoFormulariocombobox(formPanel, "Equipamento:*", new String[] {"A320", "B737", "A330", "B777"});
-        aerodromoptField = criarCampoFormulario(formPanel, "Aerodromo PT:*");
-        horaeobtField = criarCampoFormulario(formPanel, "Horaeobt:*");
-        velocidadeField = criarCampoFormulario(formPanel, "Velocidade:*");
-        nivelDeVooField = criarCampoFormulario(formPanel, "Nivel de Voo:*");
+        regrasField = criarCampoFormulariobox(formPanel, "Regras:*", new String[] {"I", "V", "Y", "Z"});
+        tipoDeVooField = criarCampoFormulariocombobox(formPanel, "Tipo de Voo (VFR/IFR):*", new String[] {"G", "S", "N", "M", "X"});
+        numaeronaveField = criarCampoFormulario(formPanel, "Numero Aeronave:*");
+        tipoaeronaveField = criarCampoFormulario(formPanel, "Tipo Aeronave:*");
+        catetField = criarCampoFormulariocombobox(formPanel, "Categoria da Esteira de Turbulência:*", new String[] {"L", "M", "H", "J"});
+        equipamentoField = criarCampoFormulariocombobox(formPanel, "Equipamento:*", new String[] {"N", "S", "A", "B", "C", "D", "E1", "E2", "E3", "F", "G", "H", "I"});
+        equipamentoVField = criarCampoFormulariocombobox(formPanel, "Equipamento de Vigilância:*", new String[] {"N", "S", "A", "B", "C", "D", "E1", "E2", "E3", "F", "G", "H", "I"});
+        aerodromoptField = criarCampoFormulario(formPanel, "Aeródromo Partida:*");
+        horaeobtField = criarCampoFormulario(formPanel, "Hora EOBT:*");
+        velocidadeField = criarCampoFormulario(formPanel, "Velocidade de Cruzeiro:*");
+        nivelDeVooField = criarCampoFormulario(formPanel, "Nivel de Cruzeiro:*");
         rotaField = criarCampoFormulario(formPanel, "Rota:*");
         aerodromodestinoField = criarCampoFormulario(formPanel, "Aeródromo Destino:*");
-        duracaototalvooField = criarCampoFormulario(formPanel, "Duração Total do Voo:*");
-        aerodromoalternativaField = criarCampoFormulario(formPanel, "Aeródromo Alternativa:*");
+        duracaototalvooField = criarCampoFormulario(formPanel, "Duração Prevista do Voo:*");
+        aerodromoalternativaField = criarCampoFormulario(formPanel, "Aeródromo de Alternativa:*");
         observacoesField = new JTextArea();
         observacoesField.setFont(new Font("Verdana", Font.PLAIN, 14));
         JScrollPane scrollPane = new JScrollPane(observacoesField);
@@ -144,8 +147,6 @@ public class PlanoDeVooApp {
                 return texto.matches("\\d+");
             case "horario":
                 return texto.matches("\\d{2}\\d{2}");
-            case "prefixo":
-                return texto.matches("[a-zA-Z]+");
             default:
                 return true;
         }
@@ -175,46 +176,36 @@ public class PlanoDeVooApp {
             mostrarErroValidacao("Tipo de Voo deve ser selecionado!");
             return false;
         }
-        if (numaeronaveField == null || numaeronaveField.length == 0) {
-            mostrarErroValidacao("Número de Aeronave deve ser preenchido!");
+        if ((numaeronaveField.getText().isEmpty())) {
+            mostrarErroValidacao("Numero de aeronave deve ser preenchido!");
             return false;
         }
-        boolean numaeronaveSelecionada = false;
-        for (JCheckBox checkBox : numaeronaveField) {
-            if (checkBox.isSelected()) {
-                numaeronaveSelecionada = true;
-                break;
-            }
-        }
-        if (!numaeronaveSelecionada) {
-            mostrarErroValidacao("Número de Aeronave deve ser preenchido!");
+        if (!validarEntrada(numaeronaveField.getText(), "numeros")) {
+            mostrarErroValidacao("Número de Aeronave deve conter apenas numeros.");
             return false;
         }
-        if (numaeronaveField == null || numaeronaveField.length == 0) {
+        if ((tipoaeronaveField.getText().isEmpty())) {
             mostrarErroValidacao("Número de Aeronave deve ser preenchido!");
-            return false;
-        }
-        boolean tipoaeronaveSelecionada = false;
-        for (JCheckBox checkBox : tipoaeronaveField) {
-            if (checkBox.isSelected()) {
-                tipoaeronaveSelecionada = true;
-                break;
-            }
-        }
-        if (!tipoaeronaveSelecionada) {
-            mostrarErroValidacao("Tipo de Aeronave deve ser preenchido!");
             return false;
         }
         if (catetField.getSelectedIndex() == 0) {
-            mostrarErroValidacao("Catet deve ser selecionado!");
+            mostrarErroValidacao("Categoria de Esteira de Turbulência deve ser selecionado!");
             return false;
         }
         if (equipamentoField.getSelectedIndex() == 0) {
             mostrarErroValidacao("Equipamento deve ser selecionado!");
             return false;
         }
+        if (equipamentoVField.getSelectedIndex() == 0) {
+            mostrarErroValidacao("Equipamento de Vigilância deve ser selecionado!");
+            return false;
+        }
         if ((aerodromoptField.getText().isEmpty())) {
-            mostrarErroValidacao("Aerodromo PT deve ser preenchido!");
+            mostrarErroValidacao("Aerodromo de Partida deve ser preenchido!");
+            return false;
+        }
+        if (!validarEntrada(aerodromoptField.getText(), "Letras")) {
+            mostrarErroValidacao("Aeródromo de partida deve conter apenas letras.");
             return false;
         }
         if (!validarEntrada(horaeobtField.getText(), "horario")) {
@@ -237,12 +228,24 @@ public class PlanoDeVooApp {
             mostrarErroValidacao("Aerodromo Destino deve ser preenchido!");
             return false;
         }
+        if (!validarEntrada(aerodromodestinoField.getText(), "letras")) {
+            mostrarErroValidacao("Aeronave deve conter apenas numeros.");
+            return false;
+        }
         if ((duracaototalvooField.getText().isEmpty())) {
             mostrarErroValidacao("Duração total do Voo deve ser preenchido!");
             return false;
         }
+        if (!validarEntrada(duracaototalvooField.getText(), "numeros")) {
+            mostrarErroValidacao("Duração prevista deve ser preenchida apenas com numeros.");
+            return false;
+        }
         if ((aerodromoalternativaField.getText().isEmpty())) {
             mostrarErroValidacao("Aerodromo Alternativa deve ser preenchido!");
+            return false;
+        }
+        if (!validarEntrada(aerodromoalternativaField.getText(), "letras")) {
+            mostrarErroValidacao("Aeródromo de alternativa deve conter apenas letras.");
             return false;
         }
         // Adicione outras validações conforme necessário
@@ -265,40 +268,25 @@ public class PlanoDeVooApp {
             }
             regras = regras.trim();
         
-            String numaeronave = "";
-            for (JCheckBox checkBox : numaeronaveField) {
-                if (checkBox.isSelected()) {
-                    numaeronave += checkBox.getText() + ", ";
-                }
-            }
-            numaeronave = numaeronave.trim();
-        
-            String tipoaeronave = "";
-            for (JCheckBox checkBox : tipoaeronaveField) {
-                if (checkBox.isSelected()) {
-                    tipoaeronave += checkBox.getText() + ", ";
-                }
-            }
-            tipoaeronave = tipoaeronave.trim();
-        
             try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/exemplobd", "root", "root")) {
-                PreparedStatement pstmt = conn.prepareStatement("INSERT INTO plano_voo (Identificação_da_Aeronave, Regras, Tipo_de_Voo, Número_de_Aeronave, Tipo_de_Aeronave, Catet, Equipamento, Aerodromo_PT, Hora_EOB, Velocidade, Nível_de_Voo, Rota, Aerodromo_Destino, Duração_Total_do_Voo, Aerodromo_Alternativa, Observacoes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                PreparedStatement pstmt = conn.prepareStatement("INSERT INTO plano_voo (Identificação_da_Aeronave, Regras, Tipo_de_Voo, Número_de_Aeronave, Tipo_de_Aeronave, Catet, Equipamento, Equipamento_Vigilancia, Aerodromo_PT, Hora_EOB, Velocidade, Nível_de_Voo, Rota, Aerodromo_Destino, Duração_Total_do_Voo, Aerodromo_Alternativa, Observacoes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                 pstmt.setString(1, identaeronaveField.getText());
                 pstmt.setString(2, regras);
                 pstmt.setString(3, (String) tipoDeVooField.getSelectedItem());
-                pstmt.setString(4, numaeronave);
-                pstmt.setString(5, tipoaeronave);
+                pstmt.setString(4, numaeronaveField.getText());
+                pstmt.setString(5, tipoaeronaveField.getText());
                 pstmt.setString(6, (String) catetField.getSelectedItem());
                 pstmt.setString(7, (String) equipamentoField.getSelectedItem());
-                pstmt.setString(8, aerodromoptField.getText());
-                pstmt.setString(9, horaeobtField.getText());
-                pstmt.setString(10, velocidadeField.getText());
-                pstmt.setString(11, nivelDeVooField.getText());
-                pstmt.setString(12, rotaField.getText());
-                pstmt.setString(13, aerodromodestinoField.getText());
-                pstmt.setString(14, duracaototalvooField.getText());
-                pstmt.setString(15, aerodromoalternativaField.getText());
-                pstmt.setString(16, observacoesField.getText());
+                pstmt.setString(8, (String) equipamentoVField.getSelectedItem());
+                pstmt.setString(9, aerodromoptField.getText());
+                pstmt.setString(10, horaeobtField.getText());
+                pstmt.setString(11, velocidadeField.getText());
+                pstmt.setString(12, nivelDeVooField.getText());
+                pstmt.setString(13, rotaField.getText());
+                pstmt.setString(14, aerodromodestinoField.getText());
+                pstmt.setString(15, duracaototalvooField.getText());
+                pstmt.setString(16, aerodromoalternativaField.getText());
+                pstmt.setString(17, observacoesField.getText());
                 pstmt.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Plano de voo enviado com sucesso!");
                 limparCampos();
@@ -310,12 +298,8 @@ public class PlanoDeVooApp {
             for (JCheckBox checkBox : regrasField) {
                 checkBox.setSelected(false);
             }
-            for (JCheckBox checkBox : numaeronaveField) {
-                checkBox.setSelected(false);
-            }
-            for (JCheckBox checkBox : tipoaeronaveField) {
-                checkBox.setSelected(false);
-            }
+            numaeronaveField.setText("");
+            tipoaeronaveField.setText("");
             identaeronaveField.setText("");
             aerodromoptField.setText("");
             horaeobtField.setText("");
@@ -330,5 +314,6 @@ public class PlanoDeVooApp {
             tipoDeVooField.setSelectedIndex(0);
             catetField.setSelectedIndex(0);
             equipamentoField.setSelectedIndex(0);
+            equipamentoVField.setSelectedIndex(0);
         }
 }
